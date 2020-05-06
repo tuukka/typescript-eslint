@@ -1,31 +1,33 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Visitor as ESRecurseVisitor } from 'esrecurse';
+import { VisitorBase, VisitorOptions } from './VisitorBase';
+import {
+  PatternVisitor,
+  PatternVisitorCallback,
+  PatternVisitorOptions,
+} from './PatternVisitor';
 
-type FallbackFn = (node: {}) => string[];
-interface VisitorKeys {
-  readonly [type: string]: ReadonlyArray<string> | undefined;
+class Visitor extends VisitorBase {
+  public readonly options: VisitorOptions;
+  constructor(visitor: VisitorBase | null, options: VisitorOptions) {
+    super(visitor, options);
+    this.options = options;
+  }
+
+  protected visitPattern(
+    node: TSESTree.Node,
+    callback: PatternVisitorCallback,
+    options: PatternVisitorOptions = { processRightHandNodes: false },
+  ): void {
+    // Call the callback at left hand identifier nodes, and Collect right hand nodes.
+    const visitor = new PatternVisitor(this.options, node, callback);
+
+    visitor.visit(node);
+
+    // Process the right hand nodes recursively.
+    if (options.processRightHandNodes) {
+      visitor.rightHandNodes.forEach(this.visit, this);
+    }
+  }
 }
-interface VisitorOptions {
-  processRightHandNodes?: boolean;
-  childVisitorKeys?: VisitorKeys | null;
-  fallback?: 'iteration' | 'none' | FallbackFn;
-}
 
-declare class ESRecurseVisitorType {
-  constructor(visitor: ESRecurseVisitorType | null, options: VisitorOptions);
-
-  /**
-   * Default method for visiting children.
-   * When you need to call default visiting operation inside custom visiting
-   * operation, you can use it with `this.visitChildren(node)`.
-   */
-  visitChildren(node: TSESTree.Node): void;
-
-  /**
-   * Dispatching node.
-   */
-  visit(node: TSESTree.Node | null | undefined): void;
-}
-class Visitor extends (ESRecurseVisitor as typeof ESRecurseVisitorType) {}
-
-export { Visitor, VisitorOptions, VisitorKeys };
+export { Visitor, VisitorBase, VisitorOptions };

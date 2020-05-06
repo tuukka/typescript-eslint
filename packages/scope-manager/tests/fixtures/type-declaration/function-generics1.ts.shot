@@ -51,10 +51,22 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"arg">,
+          node: TSFunctionType$4,
+        },
+      ],
+      name: "arg",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$4,
+      block: Program$5,
       isStrict: false,
       references: Array [],
       set: Map {
@@ -71,10 +83,7 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$2,
       isStrict: true,
-      references: Array [
-        Reference$1,
-        Reference$2,
-      ],
+      references: Array [],
       set: Map {
         "U" => Variable$3,
       },
@@ -82,6 +91,22 @@ ScopeManager {
       upper: GlobalScope$1,
       variables: Array [
         Variable$3,
+      ],
+    },
+    FunctionTypeScope$3 {
+      block: TSFunctionType$4,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "arg" => Variable$4,
+      },
+      type: "functionType",
+      upper: TypeScope$2,
+      variables: Array [
+        Variable$4,
       ],
     },
   ],

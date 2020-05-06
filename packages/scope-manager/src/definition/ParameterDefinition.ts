@@ -7,8 +7,13 @@ class ParameterDefinition extends DefinitionBase<
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
+  | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructorType
+  | TSESTree.TSConstructSignatureDeclaration
   | TSESTree.TSDeclareFunction
-  | TSESTree.TSEmptyBodyFunctionExpression,
+  | TSESTree.TSEmptyBodyFunctionExpression
+  | TSESTree.TSFunctionType
+  | TSESTree.TSMethodSignature,
   null
 > {
   /**

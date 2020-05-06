@@ -3,11 +3,7 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import { ImportVisitor } from './ImportVisitor';
-import {
-  PatternVisitor,
-  PatternVisitorCallback,
-  PatternVisitorOptions,
-} from './PatternVisitor';
+import { PatternVisitor } from './PatternVisitor';
 import { ReferenceFlag, ReferenceImplicitGlobal } from './Reference';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor, VisitorOptions } from './Visitor';
@@ -27,12 +23,10 @@ type ReferencerOptions = VisitorOptions;
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
   private isInnerMethodDefinition: boolean;
-  public readonly options: ReferencerOptions;
   public readonly scopeManager: ScopeManager;
 
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
     super(null, options);
-    this.options = options;
     this.scopeManager = scopeManager;
     this.isInnerMethodDefinition = false;
   }
@@ -99,6 +93,7 @@ class Referencer extends Visitor {
     }
 
     this.visit(node.superClass);
+    node.decorators?.forEach(d => this.visit(d));
 
     this.scopeManager.nestClassScope(node);
 
@@ -108,6 +103,7 @@ class Referencer extends Visitor {
         new ClassNameDefinition(node.id, node),
       );
     }
+
     this.visit(node.body);
 
     this.close(node);
@@ -226,22 +222,6 @@ class Referencer extends Visitor {
     }
 
     this.close(node);
-  }
-
-  protected visitPattern(
-    node: TSESTree.Node,
-    callback: PatternVisitorCallback,
-    options: PatternVisitorOptions = { processRightHandNodes: false },
-  ): void {
-    // Call the callback at left hand identifier nodes, and Collect right hand nodes.
-    const visitor = new PatternVisitor(this.options, node, callback);
-
-    visitor.visit(node);
-
-    // Process the right hand nodes recursively.
-    if (options.processRightHandNodes) {
-      visitor.rightHandNodes.forEach(this.visit, this);
-    }
   }
 
   protected visitProperty(

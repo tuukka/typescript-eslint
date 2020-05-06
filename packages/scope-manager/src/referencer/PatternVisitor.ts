@@ -2,7 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import { Visitor, VisitorOptions } from './Visitor';
+import { VisitorBase, VisitorOptions } from './Visitor';
 
 type PatternVisitorCallback = (
   pattern: TSESTree.Identifier,
@@ -14,7 +14,7 @@ type PatternVisitorCallback = (
 ) => void;
 
 type PatternVisitorOptions = VisitorOptions;
-class PatternVisitor extends Visitor {
+class PatternVisitor extends VisitorBase {
   public static isPattern(
     node: TSESTree.Node,
   ): node is

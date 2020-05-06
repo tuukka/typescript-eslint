@@ -63,16 +63,26 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"arg">,
+          node: TSMethodSignature$5,
+        },
+      ],
+      name: "arg",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$5,
+      block: Program$6,
       isStrict: false,
       references: Array [
         Reference$1,
         Reference$2,
-        Reference$3,
-        Reference$4,
       ],
       set: Map {
         "x" => Variable$1,
@@ -85,6 +95,22 @@ ScopeManager {
         Variable$1,
         Variable$2,
         Variable$3,
+      ],
+    },
+    FunctionTypeScope$2 {
+      block: TSMethodSignature$5,
+      isStrict: true,
+      references: Array [
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "arg" => Variable$4,
+      },
+      type: "functionType",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
       ],
     },
   ],

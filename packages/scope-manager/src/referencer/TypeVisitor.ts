@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
-import { TypeDefinition } from '../definition';
+import { ParameterDefinition, TypeDefinition } from '../definition';
 
 class TypeVisitor extends Visitor {
   public readonly referencer: Referencer;
@@ -31,22 +31,25 @@ class TypeVisitor extends Visitor {
       | TSESTree.TSFunctionType
       | TSESTree.TSMethodSignature,
   ): void {
-    // type parameters cannot be referenced from outside their current scope
-    if (node.typeParameters) {
-      this.referencer.scopeManager.nestFunctionTypeScope(node);
-      this.visit(node.typeParameters);
-    }
+    // arguments and type parameters can only be referenced from within the function
+    this.referencer.scopeManager.nestFunctionTypeScope(node);
+    this.visit(node.typeParameters);
 
     for (const param of node.params) {
-      if (param.type == AST_NODE_TYPES.Identifier) {
-        this.visit(param.typeAnnotation);
-      }
+      this.visitPattern(param, (pattern, info) => {
+        // a parameter name creates a value type variable which can be referenced later via typeof arg
+        this.referencer
+          .currentScope()
+          .defineIdentifier(
+            pattern,
+            new ParameterDefinition(pattern, node, info.rest),
+          );
+        this.visit(pattern.typeAnnotation);
+      });
     }
     this.visit(node.returnType);
 
-    if (node.typeParameters) {
-      this.referencer.close(node);
-    }
+    this.referencer.close(node);
   }
 
   protected visitPropertyKey(

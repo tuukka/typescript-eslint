@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration function 1`] = `
+exports[`type-declaration function1 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
@@ -38,15 +38,24 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
+    Variable$3 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"arg">,
+          node: TSFunctionType$3,
+        },
+      ],
+      name: "arg",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$3,
+      block: Program$4,
       isStrict: false,
-      references: Array [
-        Reference$1,
-        Reference$2,
-      ],
+      references: Array [],
       set: Map {
         "T" => Variable$1,
         "A" => Variable$2,
@@ -56,6 +65,22 @@ ScopeManager {
       variables: Array [
         Variable$1,
         Variable$2,
+      ],
+    },
+    FunctionTypeScope$2 {
+      block: TSFunctionType$3,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "arg" => Variable$3,
+      },
+      type: "functionType",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
       ],
     },
   ],
