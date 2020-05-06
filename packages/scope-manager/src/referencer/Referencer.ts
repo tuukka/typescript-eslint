@@ -93,6 +93,8 @@ class Referencer extends Visitor {
     }
 
     this.visit(node.superClass);
+    this.visitType(node.superTypeParameters);
+    node.implements?.forEach(imp => this.visitType(imp));
     node.decorators?.forEach(d => this.visit(d));
 
     this.scopeManager.nestClassScope(node);
