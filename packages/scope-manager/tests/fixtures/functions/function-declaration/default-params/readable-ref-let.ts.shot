@@ -1,23 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration function2 1`] = `
+exports[`functions function-declaration default-params readable-ref-let 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
       defs: Array [
         VariableDefinition$1 {
-          name: Identifier<"arg">,
+          name: Identifier<"a">,
           node: VariableDeclarator$1,
         },
       ],
-      name: "arg",
+      name: "a",
       references: Array [
-        Reference$1 {
-          identifier: Identifier<"arg">,
-          init: true,
+        Reference$2 {
+          identifier: Identifier<"a">,
           isTypeReference: false,
           resolved: Variable$1,
-          writeExpr: Literal$2,
         },
       ],
       isValueVariable: true,
@@ -25,29 +23,38 @@ ScopeManager {
     },
     Variable$2 {
       defs: Array [
-        TypeDefinition$2 {
-          name: Identifier<"A">,
-          node: TSTypeAliasDeclaration$3,
+        FunctionNameDefinition$2 {
+          name: Identifier<"foo">,
+          node: FunctionDeclaration$2,
         },
       ],
-      name: "A",
+      name: "foo",
       references: Array [],
-      isValueVariable: false,
-      isTypeVariable: true,
+      isValueVariable: true,
+      isTypeVariable: false,
     },
     Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
       defs: Array [
         ParameterDefinition$3 {
-          name: Identifier<"arg">,
-          node: TSFunctionType$4,
+          name: Identifier<"b">,
+          node: FunctionDeclaration$2,
         },
       ],
-      name: "arg",
+      name: "b",
       references: Array [
-        Reference$2 {
-          identifier: Identifier<"arg">,
+        Reference$1 {
+          identifier: Identifier<"b">,
+          init: true,
           isTypeReference: false,
-          resolved: Variable$3,
+          resolved: Variable$4,
+          writeExpr: Identifier<"a">,
         },
       ],
       isValueVariable: true,
@@ -56,14 +63,12 @@ ScopeManager {
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$5,
+      block: Program$3,
       isStrict: false,
-      references: Array [
-        Reference$1,
-      ],
+      references: Array [],
       set: Map {
-        "arg" => Variable$1,
-        "A" => Variable$2,
+        "a" => Variable$1,
+        "foo" => Variable$2,
       },
       type: "global",
       upper: null,
@@ -72,19 +77,22 @@ ScopeManager {
         Variable$2,
       ],
     },
-    FunctionTypeScope$2 {
-      block: TSFunctionType$4,
-      isStrict: true,
+    FunctionScope$2 {
+      block: FunctionDeclaration$2,
+      isStrict: false,
       references: Array [
+        Reference$1,
         Reference$2,
       ],
       set: Map {
-        "arg" => Variable$3,
+        "arguments" => Variable$3,
+        "b" => Variable$4,
       },
-      type: "functionType",
+      type: "function",
       upper: GlobalScope$1,
       variables: Array [
         Variable$3,
+        Variable$4,
       ],
     },
   ],

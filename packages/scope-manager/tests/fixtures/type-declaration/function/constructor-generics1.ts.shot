@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration function-generics1 1`] = `
+exports[`type-declaration function constructor-generics1 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
@@ -55,7 +55,7 @@ ScopeManager {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"arg">,
-          node: TSFunctionType$4,
+          node: TSConstructorType$4,
         },
       ],
       name: "arg",
@@ -94,7 +94,7 @@ ScopeManager {
       ],
     },
     FunctionTypeScope$3 {
-      block: TSFunctionType$4,
+      block: TSConstructorType$4,
       isStrict: true,
       references: Array [
         Reference$1,

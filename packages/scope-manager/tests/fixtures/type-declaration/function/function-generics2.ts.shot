@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration constructor-generics1 1`] = `
+exports[`type-declaration function function-generics2 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
@@ -55,7 +55,7 @@ ScopeManager {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"arg">,
-          node: TSConstructorType$4,
+          node: TSFunctionType$4,
         },
       ],
       name: "arg",
@@ -80,32 +80,21 @@ ScopeManager {
         Variable$2,
       ],
     },
-    TypeScope$2 {
-      block: TSTypeAliasDeclaration$2,
-      isStrict: true,
-      references: Array [],
-      set: Map {
-        "U" => Variable$3,
-      },
-      type: "type",
-      upper: GlobalScope$1,
-      variables: Array [
-        Variable$3,
-      ],
-    },
-    FunctionTypeScope$3 {
-      block: TSConstructorType$4,
+    FunctionTypeScope$2 {
+      block: TSFunctionType$4,
       isStrict: true,
       references: Array [
         Reference$1,
         Reference$2,
       ],
       set: Map {
+        "U" => Variable$3,
         "arg" => Variable$4,
       },
       type: "functionType",
-      upper: TypeScope$2,
+      upper: GlobalScope$1,
       variables: Array [
+        Variable$3,
         Variable$4,
       ],
     },

@@ -1,31 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration function-generics2 1`] = `
+exports[`type-declaration function function2 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
       defs: Array [
-        TypeDefinition$1 {
-          name: Identifier<"T">,
-          node: TSTypeAliasDeclaration$1,
+        VariableDefinition$1 {
+          name: Identifier<"arg">,
+          node: VariableDeclarator$1,
         },
       ],
-      name: "T",
+      name: "arg",
       references: Array [
-        Reference$2 {
-          identifier: Identifier<"T">,
-          isTypeReference: true,
+        Reference$1 {
+          identifier: Identifier<"arg">,
+          init: true,
+          isTypeReference: false,
           resolved: Variable$1,
+          writeExpr: Literal$2,
         },
       ],
-      isValueVariable: false,
-      isTypeVariable: true,
+      isValueVariable: true,
+      isTypeVariable: false,
     },
     Variable$2 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"A">,
-          node: TSTypeAliasDeclaration$2,
+          node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "A",
@@ -35,31 +37,19 @@ ScopeManager {
     },
     Variable$3 {
       defs: Array [
-        TypeDefinition$3 {
-          name: Identifier<"U">,
-          node: TSTypeParameter$3,
-        },
-      ],
-      name: "U",
-      references: Array [
-        Reference$1 {
-          identifier: Identifier<"U">,
-          isTypeReference: true,
-          resolved: Variable$3,
-        },
-      ],
-      isValueVariable: false,
-      isTypeVariable: true,
-    },
-    Variable$4 {
-      defs: Array [
-        ParameterDefinition$4 {
+        ParameterDefinition$3 {
           name: Identifier<"arg">,
           node: TSFunctionType$4,
         },
       ],
       name: "arg",
-      references: Array [],
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"arg">,
+          isTypeReference: false,
+          resolved: Variable$3,
+        },
+      ],
       isValueVariable: true,
       isTypeVariable: false,
     },
@@ -68,9 +58,11 @@ ScopeManager {
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [],
+      references: Array [
+        Reference$1,
+      ],
       set: Map {
-        "T" => Variable$1,
+        "arg" => Variable$1,
         "A" => Variable$2,
       },
       type: "global",
@@ -84,18 +76,15 @@ ScopeManager {
       block: TSFunctionType$4,
       isStrict: true,
       references: Array [
-        Reference$1,
         Reference$2,
       ],
       set: Map {
-        "U" => Variable$3,
-        "arg" => Variable$4,
+        "arg" => Variable$3,
       },
       type: "functionType",
       upper: GlobalScope$1,
       variables: Array [
         Variable$3,
-        Variable$4,
       ],
     },
   ],
