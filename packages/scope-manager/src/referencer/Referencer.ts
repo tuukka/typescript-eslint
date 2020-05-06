@@ -197,19 +197,23 @@ class Referencer extends Visitor {
     this.scopeManager.nestFunctionScope(node, this.isInnerMethodDefinition);
 
     // Process parameter declarations.
-    for (let i = 0; i < node.params.length; ++i) {
+    for (const param of node.params) {
       this.visitPattern(
-        node.params[i],
+        param,
         (pattern, info) => {
           this.currentScope().defineIdentifier(
             pattern,
             new ParameterDefinition(pattern, node, info.rest),
           );
 
+          this.visitType(pattern.typeAnnotation);
           this.referencingDefaultValue(pattern, info.assignments, null, true);
         },
         { processRightHandNodes: true },
       );
+      if ('typeAnnotation' in param) {
+        this.visitType(param.typeAnnotation);
+      }
     }
 
     // In TypeScript there are a number of function-like constructs which have no body,
@@ -444,6 +448,7 @@ class Referencer extends Visitor {
 
   protected Identifier(node: TSESTree.Identifier): void {
     this.currentScope().referenceValue(node);
+    this.visitType(node.typeAnnotation);
   }
 
   protected ImportDeclaration(node: TSESTree.ImportDeclaration): void {
@@ -520,8 +525,8 @@ class Referencer extends Visitor {
       this.scopeManager.nestSwitchScope(node);
     }
 
-    for (let i = 0; i < node.cases.length; ++i) {
-      this.visit(node.cases[i]);
+    for (const switchCase of node.cases) {
+      this.visit(switchCase);
     }
 
     this.close(node);
@@ -600,8 +605,7 @@ class Referencer extends Visitor {
         ? this.currentScope().variableScope
         : this.currentScope();
 
-    for (let i = 0; i < node.declarations.length; ++i) {
-      const decl = node.declarations[i];
+    for (const decl of node.declarations) {
       const init = decl.init;
 
       this.visitPattern(
@@ -612,6 +616,7 @@ class Referencer extends Visitor {
             new VariableDefinition(pattern, decl, node),
           );
 
+          this.visitType(pattern.typeAnnotation);
           this.referencingDefaultValue(pattern, info.assignments, null, true);
           if (init) {
             this.currentScope().referenceValue(
@@ -628,6 +633,10 @@ class Referencer extends Visitor {
 
       if (decl.init) {
         this.visit(decl.init);
+      }
+
+      if ('typeAnnotation' in decl.id) {
+        this.visitType(decl.id.typeAnnotation);
       }
     }
   }

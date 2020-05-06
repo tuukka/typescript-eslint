@@ -60,9 +60,7 @@ class PatternVisitor extends VisitorBase {
   }
 
   protected ArrayPattern(pattern: TSESTree.ArrayPattern): void {
-    for (let i = 0; i < pattern.elements.length; ++i) {
-      const element = pattern.elements[i];
-
+    for (const element of pattern.elements) {
       this.visit(element);
     }
   }
@@ -133,6 +131,10 @@ class PatternVisitor extends VisitorBase {
 
   protected SpreadElement(node: TSESTree.SpreadElement): void {
     this.visit(node.argument);
+  }
+
+  protected TSTypeAnnotation(): void {
+    // we don't want to visit types
   }
 }
 
