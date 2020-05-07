@@ -4,10 +4,13 @@ import { DefinitionBase } from './DefinitionBase';
 
 class TypeDefinition extends DefinitionBase<
   DefinitionType.Type,
-  TSESTree.Node, // TODO
-  null
+  | TSESTree.TSInterfaceDeclaration
+  | TSESTree.TSTypeAliasDeclaration
+  | TSESTree.TSTypeParameter,
+  null,
+  TSESTree.Identifier
 > {
-  constructor(name: TSESTree.Identifier, node: TSESTree.Node) {
+  constructor(name: TSESTree.Identifier, node: TypeDefinition['node']) {
     super(DefinitionType.Type, name, node, null);
   }
 

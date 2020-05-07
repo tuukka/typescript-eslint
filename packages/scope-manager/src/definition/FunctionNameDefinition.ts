@@ -8,7 +8,8 @@ class FunctionNameDefinition extends DefinitionBase<
   | TSESTree.FunctionExpression
   | TSESTree.TSDeclareFunction
   | TSESTree.TSEmptyBodyFunctionExpression,
-  null
+  null,
+  TSESTree.Identifier
 > {
   constructor(name: TSESTree.Identifier, node: FunctionNameDefinition['node']) {
     super(DefinitionType.FunctionName, name, node, null);

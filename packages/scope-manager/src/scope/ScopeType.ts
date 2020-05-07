@@ -11,6 +11,7 @@ enum ScopeType {
   mappedType = 'mappedType',
   module = 'module',
   switch = 'switch',
+  tsEnum = 'tsEnum',
   tsModule = 'tsModule',
   type = 'type',
   with = 'with',

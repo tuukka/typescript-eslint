@@ -7,7 +7,8 @@ const generator = createIdGenerator();
 abstract class DefinitionBase<
   TType extends DefinitionType,
   TNode extends TSESTree.Node,
-  TParent extends TSESTree.Node | null
+  TParent extends TSESTree.Node | null,
+  TName extends TSESTree.Node = TSESTree.BindingName
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
@@ -24,7 +25,7 @@ abstract class DefinitionBase<
    * The `Identifier` node of this definition
    * @public
    */
-  public readonly name: TSESTree.BindingName;
+  public readonly name: TName;
 
   /**
    * The enclosing node of the name.
@@ -38,12 +39,7 @@ abstract class DefinitionBase<
    */
   public readonly parent: TParent;
 
-  constructor(
-    type: TType,
-    name: TSESTree.BindingName,
-    node: TNode,
-    parent: TParent,
-  ) {
+  constructor(type: TType, name: TName, node: TNode, parent: TParent) {
     this.type = type;
     this.name = name;
     this.node = node;

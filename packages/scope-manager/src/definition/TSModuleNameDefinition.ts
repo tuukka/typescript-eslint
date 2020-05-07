@@ -5,7 +5,8 @@ import { DefinitionBase } from './DefinitionBase';
 class TSModuleNameDefinition extends DefinitionBase<
   DefinitionType.TSModuleName,
   TSESTree.TSModuleDeclaration,
-  null
+  null,
+  TSESTree.Identifier
 > {
   constructor(name: TSESTree.Identifier, node: TSModuleNameDefinition['node']) {
     super(DefinitionType.TSModuleName, name, node, null);

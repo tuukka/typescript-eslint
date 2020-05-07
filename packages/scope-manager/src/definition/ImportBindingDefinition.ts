@@ -8,7 +8,8 @@ class ImportBindingDefinition extends DefinitionBase<
   | TSESTree.ImportDefaultSpecifier
   | TSESTree.ImportNamespaceSpecifier
   | TSESTree.TSImportEqualsDeclaration,
-  TSESTree.ImportDeclaration | TSESTree.TSImportEqualsDeclaration
+  TSESTree.ImportDeclaration | TSESTree.TSImportEqualsDeclaration,
+  TSESTree.Identifier
 > {
   constructor(
     name: TSESTree.Identifier,

@@ -14,6 +14,8 @@ import {
   FunctionNameDefinition,
   ImportBindingDefinition,
   ParameterDefinition,
+  TSEnumMemberDefinition,
+  TSEnumNameDefinition,
   TSModuleNameDefinition,
   VariableDefinition,
 } from '../definition';
@@ -574,6 +576,53 @@ class Referencer extends Visitor {
     node: TSESTree.TSEmptyBodyFunctionExpression,
   ): void {
     this.visitFunction(node);
+  }
+
+  protected TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
+    this.currentScope().defineIdentifier(
+      node.id,
+      new TSEnumNameDefinition(node.id, node),
+    );
+
+    // enum members can be referenced within the enum body
+    this.scopeManager.nestTSEnumScope(node);
+
+    // define the enum name again inside the new enum scope
+    // references to the enum should not resolve directly to the enum
+    this.currentScope().defineIdentifier(
+      node.id,
+      new TSEnumNameDefinition(node.id, node),
+    );
+
+    for (const member of node.members) {
+      // TS resolves literal named members to be actual names
+      // enum Foo {
+      //   'a' = 1,
+      //   b = a, // this references the 'a' member
+      // }
+      if (
+        member.id.type === AST_NODE_TYPES.Literal &&
+        typeof member.id.value === 'string'
+      ) {
+        const name = member.id as TSESTree.StringLiteral;
+        this.currentScope().defineLiteralIdentifier(
+          name,
+          new TSEnumMemberDefinition(name, member),
+        );
+      } else if (
+        !member.computed &&
+        member.id.type === AST_NODE_TYPES.Identifier
+      ) {
+        this.currentScope().defineIdentifier(
+          member.id,
+          new TSEnumMemberDefinition(member.id, member),
+        );
+      }
+
+      this.visit(member.initializer);
+    }
+
+    this.close(node);
   }
 
   protected TSInterfaceDeclaration(

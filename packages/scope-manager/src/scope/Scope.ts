@@ -10,6 +10,7 @@ import { GlobalScope } from './GlobalScope';
 import { MappedTypeScope } from './MappedTypeScope';
 import { ModuleScope } from './ModuleScope';
 import { SwitchScope } from './SwitchScope';
+import { TSEnumScope } from './TSEnumScope';
 import { TSModuleScope } from './TSModuleScope';
 import { TypeScope } from './TypeScope';
 import { WithScope } from './WithScope';
@@ -27,6 +28,7 @@ type Scope =
   | MappedTypeScope
   | ModuleScope
   | SwitchScope
+  | TSEnumScope
   | TSModuleScope
   | TypeScope
   | WithScope;

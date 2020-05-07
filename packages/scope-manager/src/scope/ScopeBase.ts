@@ -43,6 +43,7 @@ function isStrictScope(
     scope.type === ScopeType.functionType ||
     scope.type === ScopeType.mappedType ||
     scope.type === ScopeType.module ||
+    scope.type === ScopeType.tsEnum ||
     scope.type === ScopeType.tsModule ||
     scope.type === ScopeType.type
   ) {
@@ -130,6 +131,8 @@ function shouldBeStaticallyClosed(def: Definition): boolean {
   return (
     def.type === DefinitionType.Type ||
     def.type === DefinitionType.TSModuleName ||
+    def.type === DefinitionType.TSEnumMember ||
+    def.type === DefinitionType.TSEnumName ||
     def.type === DefinitionType.ClassName ||
     (def.type === DefinitionType.Variable &&
       def.parent?.type === AST_NODE_TYPES.VariableDeclaration &&
@@ -418,6 +421,13 @@ abstract class ScopeBase<
 
   public defineIdentifier(node: TSESTree.Identifier, def: Definition): void {
     this.defineVariable(node.name, this.set, this.variables, node, def);
+  }
+
+  public defineLiteralIdentifier(
+    node: TSESTree.StringLiteral,
+    def: Definition,
+  ): void {
+    this.defineVariable(node.value, this.set, this.variables, null, def);
   }
 
   public referenceValue(

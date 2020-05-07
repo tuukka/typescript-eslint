@@ -5,7 +5,8 @@ import { DefinitionBase } from './DefinitionBase';
 class VariableDefinition extends DefinitionBase<
   DefinitionType.Variable,
   TSESTree.VariableDeclarator,
-  TSESTree.VariableDeclaration
+  TSESTree.VariableDeclaration,
+  TSESTree.Identifier
 > {
   constructor(
     name: TSESTree.Identifier,

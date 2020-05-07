@@ -5,7 +5,8 @@ import { DefinitionBase } from './DefinitionBase';
 class ImplicitGlobalVariableDefinition extends DefinitionBase<
   DefinitionType.ImplicitGlobalVariable,
   TSESTree.Node,
-  null
+  null,
+  TSESTree.BindingName
 > {
   constructor(
     name: TSESTree.BindingName,

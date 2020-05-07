@@ -6,6 +6,8 @@ export * from './FunctionNameDefinition';
 export * from './ImplicitGlobalVariableDefinition';
 export * from './ImportBindingDefinition';
 export * from './ParameterDefinition';
+export * from './TSEnumMemberDefinition';
+export * from './TSEnumNameDefinition';
 export * from './TSModuleNameDefinition';
 export * from './TypeDefinition';
 export * from './VariableDefinition';
