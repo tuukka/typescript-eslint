@@ -6,6 +6,7 @@ enum DefinitionType {
   ImplicitGlobalVariable = 'ImplicitGlobalVariable',
   ImportBinding = 'ImportBinding',
   Parameter = 'Parameter',
+  TSModuleName = 'TSModuleName',
   Type = 'Type',
   Variable = 'Variable',
 }

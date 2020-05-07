@@ -14,6 +14,7 @@ import {
   ModuleScope,
   Scope,
   SwitchScope,
+  TSModuleScope,
   TypeScope,
   WithScope,
 } from './scope';
@@ -226,6 +227,11 @@ class ScopeManager {
   public nestSwitchScope(node: SwitchScope['block']): Scope {
     assert(this.currentScope);
     return this.nestScope(new SwitchScope(this, this.currentScope, node));
+  }
+
+  public nestTSModuleScope(node: TSModuleScope['block']): Scope {
+    assert(this.currentScope);
+    return this.nestScope(new TSModuleScope(this, this.currentScope, node));
   }
 
   public nestTypeScope(node: TypeScope['block']): Scope {

@@ -39,10 +39,12 @@ function isStrictScope(
 
   if (
     scope.type === ScopeType.class ||
-    scope.type === ScopeType.module ||
-    scope.type === ScopeType.type ||
     scope.type === ScopeType.conditionalType ||
-    scope.type === ScopeType.functionType
+    scope.type === ScopeType.functionType ||
+    scope.type === ScopeType.mappedType ||
+    scope.type === ScopeType.module ||
+    scope.type === ScopeType.tsModule ||
+    scope.type === ScopeType.type
   ) {
     return true;
   }
@@ -127,6 +129,7 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
 function shouldBeStaticallyClosed(def: Definition): boolean {
   return (
     def.type === DefinitionType.Type ||
+    def.type === DefinitionType.TSModuleName ||
     def.type === DefinitionType.ClassName ||
     (def.type === DefinitionType.Variable &&
       def.parent?.type === AST_NODE_TYPES.VariableDeclaration &&

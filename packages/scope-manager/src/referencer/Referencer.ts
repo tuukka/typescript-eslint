@@ -14,6 +14,7 @@ import {
   FunctionNameDefinition,
   ImportBindingDefinition,
   ParameterDefinition,
+  TSModuleNameDefinition,
   VariableDefinition,
 } from '../definition';
 import { Scope } from '../scope';
@@ -100,6 +101,8 @@ class Referencer extends Visitor {
     this.scopeManager.nestClassScope(node);
 
     if (node.id) {
+      // define the class name again inside the new scope
+      // references to the class should not resolve directly to the parent class
       this.currentScope().defineIdentifier(
         node.id,
         new ClassNameDefinition(node.id, node),
@@ -577,6 +580,30 @@ class Referencer extends Visitor {
     node: TSESTree.TSInterfaceDeclaration,
   ): void {
     this.visitType(node);
+  }
+
+  protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
+    if (node.id.type === AST_NODE_TYPES.Identifier) {
+      this.currentScope().defineIdentifier(
+        node.id,
+        new TSModuleNameDefinition(node.id, node),
+      );
+    }
+
+    this.scopeManager.nestTSModuleScope(node);
+
+    if (node.id.type === AST_NODE_TYPES.Identifier) {
+      // define the module name again inside the new module scope
+      // references to the module should not resolve directly to the module
+      this.currentScope().defineIdentifier(
+        node.id,
+        new TSModuleNameDefinition(node.id, node),
+      );
+    }
+
+    this.visit(node.body);
+
+    this.close(node);
   }
 
   protected TSTypeAliasDeclaration(

@@ -114,8 +114,8 @@ class TypeVisitor extends Visitor {
       .currentScope()
       .defineIdentifier(node.id, new TypeDefinition(node.id, node));
 
-    // type parameters cannot be referenced from outside their current scope
     if (node.typeParameters) {
+      // type parameters cannot be referenced from outside their current scope
       this.referencer.scopeManager.nestTypeScope(node);
       this.visit(node.typeParameters);
     }
@@ -130,6 +130,7 @@ class TypeVisitor extends Visitor {
   }
 
   protected TSMappedType(node: TSESTree.TSMappedType): void {
+    // mapped types key can only be referenced within their return value
     this.referencer.scopeManager.nestMappedTypeScope(node);
     this.visitChildren(node);
     this.referencer.close(node);
@@ -157,8 +158,8 @@ class TypeVisitor extends Visitor {
       .currentScope()
       .defineIdentifier(node.id, new TypeDefinition(node.id, node));
 
-    // type parameters cannot be referenced from outside their current scope
     if (node.typeParameters) {
+      // type parameters cannot be referenced from outside their current scope
       this.referencer.scopeManager.nestTypeScope(node);
       this.visit(node.typeParameters);
     }

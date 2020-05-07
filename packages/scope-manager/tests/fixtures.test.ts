@@ -59,7 +59,7 @@ function nestDescribe(
 
         const match = FOUR_SLASH.exec(line);
         if (!match) {
-          continue;
+          throw new Error(`Four-slash did not match expected format: ${line}`);
         }
         const [, key, value] = match;
         if (!ALLOWED_OPTIONS.has(key)) {

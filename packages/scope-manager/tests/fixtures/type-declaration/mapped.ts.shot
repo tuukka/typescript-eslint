@@ -76,7 +76,7 @@ ScopeManager {
     },
     MappedTypeScope$2 {
       block: TSMappedType$5,
-      isStrict: false,
+      isStrict: true,
       references: Array [
         Reference$2,
         Reference$3,
