@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration type-generics 1`] = `
+exports[`type-declaration type-parameters interface type-parameter-declaration 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
       defs: Array [
         TypeDefinition$1 {
-          name: Identifier<"A">,
-          node: TSTypeAliasDeclaration$1,
+          name: Identifier<"Foo">,
+          node: TSInterfaceDeclaration$1,
         },
       ],
-      name: "A",
+      name: "Foo",
       references: Array [],
       isValueVariable: false,
       isTypeVariable: true,
@@ -23,24 +23,18 @@ ScopeManager {
         },
       ],
       name: "T",
-      references: Array [
-        Reference$1 {
-          identifier: Identifier<"T">,
-          isTypeReference: true,
-          resolved: Variable$2,
-        },
-      ],
+      references: Array [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
       defs: Array [
         TypeDefinition$3 {
-          name: Identifier<"Uresolved">,
+          name: Identifier<"Unresolved">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
-      name: "Uresolved",
+      name: "Unresolved",
       references: Array [],
       isValueVariable: false,
       isTypeVariable: true,
@@ -51,15 +45,15 @@ ScopeManager {
       block: Program$4,
       isStrict: false,
       references: Array [
-        Reference$2 {
+        Reference$1 {
           identifier: Identifier<"T">,
           isTypeReference: true,
           resolved: null,
         },
       ],
       set: Map {
-        "A" => Variable$1,
-        "Uresolved" => Variable$3,
+        "Foo" => Variable$1,
+        "Unresolved" => Variable$3,
       },
       type: "global",
       upper: null,
@@ -69,11 +63,9 @@ ScopeManager {
       ],
     },
     TypeScope$2 {
-      block: TSTypeAliasDeclaration$1,
+      block: TSInterfaceDeclaration$1,
       isStrict: true,
-      references: Array [
-        Reference$1,
-      ],
+      references: Array [],
       set: Map {
         "T" => Variable$2,
       },

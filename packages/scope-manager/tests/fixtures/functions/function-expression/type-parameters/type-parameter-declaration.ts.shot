@@ -1,41 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration interface-generics 1`] = `
+exports[`functions function-expression type-parameters type-parameter-declaration 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
       defs: Array [
-        TypeDefinition$1 {
-          name: Identifier<"A">,
-          node: TSInterfaceDeclaration$1,
+        VariableDefinition$1 {
+          name: Identifier<"foo">,
+          node: VariableDeclarator$1,
         },
       ],
-      name: "A",
-      references: Array [],
-      isValueVariable: false,
-      isTypeVariable: true,
-    },
-    Variable$2 {
-      defs: Array [
-        TypeDefinition$2 {
-          name: Identifier<"T">,
-          node: TSTypeParameter$2,
-        },
-      ],
-      name: "T",
+      name: "foo",
       references: Array [
         Reference$1 {
-          identifier: Identifier<"T">,
-          isTypeReference: true,
-          resolved: Variable$2,
+          identifier: Identifier<"foo">,
+          init: true,
+          isTypeReference: false,
+          resolved: Variable$1,
+          writeExpr: FunctionExpression$2,
         },
       ],
-      isValueVariable: false,
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$3 {
       defs: Array [
-        TypeDefinition$3 {
+        TypeDefinition$2 {
           name: Identifier<"Unresolved">,
           node: TSTypeAliasDeclaration$3,
         },
@@ -51,6 +48,7 @@ ScopeManager {
       block: Program$4,
       isStrict: false,
       references: Array [
+        Reference$1,
         Reference$2 {
           identifier: Identifier<"T">,
           isTypeReference: true,
@@ -58,7 +56,7 @@ ScopeManager {
         },
       ],
       set: Map {
-        "A" => Variable$1,
+        "foo" => Variable$1,
         "Unresolved" => Variable$3,
       },
       type: "global",
@@ -68,16 +66,14 @@ ScopeManager {
         Variable$3,
       ],
     },
-    TypeScope$2 {
-      block: TSInterfaceDeclaration$1,
-      isStrict: true,
-      references: Array [
-        Reference$1,
-      ],
+    FunctionScope$2 {
+      block: FunctionExpression$2,
+      isStrict: false,
+      references: Array [],
       set: Map {
-        "T" => Variable$2,
+        "arguments" => Variable$2,
       },
-      type: "type",
+      type: "function",
       upper: GlobalScope$1,
       variables: Array [
         Variable$2,
