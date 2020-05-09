@@ -28,7 +28,7 @@ class Reference {
   /**
    * The read-write mode of the reference.
    */
-  private readonly flag: ReferenceFlag;
+  readonly #flag: ReferenceFlag;
   /**
    * Reference to the enclosing Scope.
    * @public
@@ -74,7 +74,7 @@ class Reference {
     this.identifier = identifier;
     this.from = scope;
     this.resolved = null;
-    this.flag = flag;
+    this.#flag = flag;
 
     if (this.isWrite()) {
       this.writeExpr = writeExpr;
@@ -90,7 +90,7 @@ class Reference {
    * @public
    */
   public isWrite(): boolean {
-    return !!(this.flag & ReferenceFlag.WRITE);
+    return !!(this.#flag & ReferenceFlag.WRITE);
   }
 
   /**
@@ -98,7 +98,7 @@ class Reference {
    * @public
    */
   public isRead(): boolean {
-    return !!(this.flag & ReferenceFlag.READ);
+    return !!(this.#flag & ReferenceFlag.READ);
   }
 
   /**
@@ -106,7 +106,7 @@ class Reference {
    * @public
    */
   public isReadOnly(): boolean {
-    return this.flag === ReferenceFlag.READ;
+    return this.#flag === ReferenceFlag.READ;
   }
 
   /**
@@ -114,7 +114,7 @@ class Reference {
    * @public
    */
   public isWriteOnly(): boolean {
-    return this.flag === ReferenceFlag.WRITE;
+    return this.#flag === ReferenceFlag.WRITE;
   }
 
   /**
@@ -122,7 +122,7 @@ class Reference {
    * @public
    */
   public isReadWrite(): boolean {
-    return this.flag === ReferenceFlag.RW;
+    return this.#flag === ReferenceFlag.RW;
   }
 }
 

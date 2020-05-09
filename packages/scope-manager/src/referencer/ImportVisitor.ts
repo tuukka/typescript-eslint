@@ -4,13 +4,13 @@ import { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 
 class ImportVisitor extends Visitor {
-  public readonly declaration: TSESTree.ImportDeclaration;
-  public readonly referencer: Referencer;
+  readonly #declaration: TSESTree.ImportDeclaration;
+  readonly #referencer: Referencer;
 
   constructor(declaration: TSESTree.ImportDeclaration, referencer: Referencer) {
-    super(null, referencer.options);
-    this.declaration = declaration;
-    this.referencer = referencer;
+    super(referencer);
+    this.#declaration = declaration;
+    this.#referencer = referencer;
   }
 
   static visit(
@@ -28,11 +28,11 @@ class ImportVisitor extends Visitor {
       | TSESTree.ImportNamespaceSpecifier
       | TSESTree.ImportSpecifier,
   ): void {
-    this.referencer
+    this.#referencer
       .currentScope()
       .defineIdentifier(
         id,
-        new ImportBindingDefinition(id, specifier, this.declaration),
+        new ImportBindingDefinition(id, specifier, this.#declaration),
       );
   }
 

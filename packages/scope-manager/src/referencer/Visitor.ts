@@ -6,20 +6,31 @@ import {
   PatternVisitorOptions,
 } from './PatternVisitor';
 
+interface VisitPatternOptions extends PatternVisitorOptions {
+  processRightHandNodes?: boolean;
+}
 class Visitor extends VisitorBase {
-  public readonly options: VisitorOptions;
-  constructor(visitor: VisitorBase | null, options: VisitorOptions) {
-    super(visitor, options);
-    this.options = options;
+  readonly #options: VisitorOptions;
+  constructor(optionsOrVisitor: VisitorOptions | Visitor) {
+    super(
+      optionsOrVisitor instanceof Visitor
+        ? optionsOrVisitor.#options
+        : optionsOrVisitor,
+    );
+
+    this.#options =
+      optionsOrVisitor instanceof Visitor
+        ? optionsOrVisitor.#options
+        : optionsOrVisitor;
   }
 
   protected visitPattern(
     node: TSESTree.Node,
     callback: PatternVisitorCallback,
-    options: PatternVisitorOptions = { processRightHandNodes: false },
+    options: VisitPatternOptions = { processRightHandNodes: false },
   ): void {
     // Call the callback at left hand identifier nodes, and Collect right hand nodes.
-    const visitor = new PatternVisitor(this.options, node, callback);
+    const visitor = new PatternVisitor(this.#options, node, callback);
 
     visitor.visit(node);
 

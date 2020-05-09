@@ -50,7 +50,7 @@ class PatternVisitor extends VisitorBase {
     rootPattern: TSESTree.Node,
     callback: PatternVisitorCallback,
   ) {
-    super(null, options);
+    super(options);
     this.rootPattern = rootPattern;
     this.callback = callback;
   }

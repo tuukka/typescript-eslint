@@ -25,20 +25,20 @@ import { ScopeManager } from '../ScopeManager';
 type ReferencerOptions = VisitorOptions;
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
-  private isInnerMethodDefinition: boolean;
+  #isInnerMethodDefinition: boolean;
   public readonly scopeManager: ScopeManager;
 
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
-    super(null, options);
+    super(options);
     this.scopeManager = scopeManager;
-    this.isInnerMethodDefinition = false;
+    this.#isInnerMethodDefinition = false;
   }
 
   public currentScope(): Scope;
   public currentScope(throwOnNull: true): Scope | null;
   public currentScope(dontThrowOnNull?: true): Scope | null {
     if (!dontThrowOnNull) {
-      assert(this.scopeManager.currentScope);
+      assert(this.scopeManager.currentScope, 'aaa');
     }
     return this.scopeManager.currentScope;
   }
@@ -51,20 +51,22 @@ class Referencer extends Visitor {
     }
   }
 
-  private pushInnerMethodDefinition(isInnerMethodDefinition: boolean): boolean {
-    const previous = this.isInnerMethodDefinition;
+  protected pushInnerMethodDefinition(
+    isInnerMethodDefinition: boolean,
+  ): boolean {
+    const previous = this.#isInnerMethodDefinition;
 
-    this.isInnerMethodDefinition = isInnerMethodDefinition;
+    this.#isInnerMethodDefinition = isInnerMethodDefinition;
     return previous;
   }
 
-  private popInnerMethodDefinition(
+  protected popInnerMethodDefinition(
     isInnerMethodDefinition: boolean | undefined,
   ): void {
-    this.isInnerMethodDefinition = !!isInnerMethodDefinition;
+    this.#isInnerMethodDefinition = !!isInnerMethodDefinition;
   }
 
-  private referencingDefaultValue(
+  protected referencingDefaultValue(
     pattern: TSESTree.Identifier,
     assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[],
     maybeImplicitGlobal: ReferenceImplicitGlobal | null,
@@ -199,7 +201,7 @@ class Referencer extends Visitor {
     }
 
     // Consider this function is in the MethodDefinition.
-    this.scopeManager.nestFunctionScope(node, this.isInnerMethodDefinition);
+    this.scopeManager.nestFunctionScope(node, this.#isInnerMethodDefinition);
 
     // Process parameter declarations.
     for (const param of node.params) {

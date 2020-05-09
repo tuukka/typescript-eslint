@@ -7,11 +7,11 @@ import { Visitor } from './Visitor';
 import { ParameterDefinition, TypeDefinition } from '../definition';
 
 class TypeVisitor extends Visitor {
-  public readonly referencer: Referencer;
+  readonly #referencer: Referencer;
 
   constructor(referencer: Referencer) {
-    super(null, referencer.options);
-    this.referencer = referencer;
+    super(referencer);
+    this.#referencer = referencer;
   }
 
   static visit(referencer: Referencer, node: TSESTree.Node): void {
@@ -32,13 +32,13 @@ class TypeVisitor extends Visitor {
       | TSESTree.TSMethodSignature,
   ): void {
     // arguments and type parameters can only be referenced from within the function
-    this.referencer.scopeManager.nestFunctionTypeScope(node);
+    this.#referencer.scopeManager.nestFunctionTypeScope(node);
     this.visit(node.typeParameters);
 
     for (const param of node.params) {
       this.visitPattern(param, (pattern, info) => {
         // a parameter name creates a value type variable which can be referenced later via typeof arg
-        this.referencer
+        this.#referencer
           .currentScope()
           .defineIdentifier(
             pattern,
@@ -49,14 +49,14 @@ class TypeVisitor extends Visitor {
     }
     this.visit(node.returnType);
 
-    this.referencer.close(node);
+    this.#referencer.close(node);
   }
 
   protected visitPropertyKey(
     node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
   ): void {
     if (node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
-      this.referencer.currentScope().referenceValue(node.key);
+      this.#referencer.currentScope().referenceValue(node.key);
     }
   }
 
@@ -65,7 +65,7 @@ class TypeVisitor extends Visitor {
   /////////////////////
 
   protected Identifier(node: TSESTree.Identifier): void {
-    this.referencer.currentScope().referenceType(node);
+    this.#referencer.currentScope().referenceType(node);
   }
 
   protected TSCallSignatureDeclaration(
@@ -77,11 +77,11 @@ class TypeVisitor extends Visitor {
   protected TSConditionalType(node: TSESTree.TSConditionalType): void {
     // conditional types can define inferred type parameters
     // which are only accessible from inside the conditional parameter
-    this.referencer.scopeManager.nestConditionalTypeScope(node);
+    this.#referencer.scopeManager.nestConditionalTypeScope(node);
 
     this.visitChildren(node);
 
-    this.referencer.close(node);
+    this.#referencer.close(node);
   }
 
   protected TSConstructorType(node: TSESTree.TSConstructorType): void {
@@ -110,13 +110,13 @@ class TypeVisitor extends Visitor {
   protected TSInterfaceDeclaration(
     node: TSESTree.TSInterfaceDeclaration,
   ): void {
-    this.referencer
+    this.#referencer
       .currentScope()
       .defineIdentifier(node.id, new TypeDefinition(node.id, node));
 
     if (node.typeParameters) {
       // type parameters cannot be referenced from outside their current scope
-      this.referencer.scopeManager.nestTypeScope(node);
+      this.#referencer.scopeManager.nestTypeScope(node);
       this.visit(node.typeParameters);
     }
 
@@ -125,15 +125,15 @@ class TypeVisitor extends Visitor {
     this.visit(node.body);
 
     if (node.typeParameters) {
-      this.referencer.close(node);
+      this.#referencer.close(node);
     }
   }
 
   protected TSMappedType(node: TSESTree.TSMappedType): void {
     // mapped types key can only be referenced within their return value
-    this.referencer.scopeManager.nestMappedTypeScope(node);
+    this.#referencer.scopeManager.nestMappedTypeScope(node);
     this.visitChildren(node);
-    this.referencer.close(node);
+    this.#referencer.close(node);
   }
 
   protected TSMethodSignature(node: TSESTree.TSMethodSignature): void {
@@ -154,25 +154,25 @@ class TypeVisitor extends Visitor {
   protected TSTypeAliasDeclaration(
     node: TSESTree.TSTypeAliasDeclaration,
   ): void {
-    this.referencer
+    this.#referencer
       .currentScope()
       .defineIdentifier(node.id, new TypeDefinition(node.id, node));
 
     if (node.typeParameters) {
       // type parameters cannot be referenced from outside their current scope
-      this.referencer.scopeManager.nestTypeScope(node);
+      this.#referencer.scopeManager.nestTypeScope(node);
       this.visit(node.typeParameters);
     }
 
     this.visit(node.typeAnnotation);
 
     if (node.typeParameters) {
-      this.referencer.close(node);
+      this.#referencer.close(node);
     }
   }
 
   protected TSTypeParameter(node: TSESTree.TSTypeParameter): void {
-    this.referencer
+    this.#referencer
       .currentScope()
       .defineIdentifier(node.name, new TypeDefinition(node.name, node));
   }
@@ -180,13 +180,13 @@ class TypeVisitor extends Visitor {
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     if (node.exprName.type === AST_NODE_TYPES.Identifier) {
-      this.referencer.currentScope().referenceValue(node.exprName);
+      this.#referencer.currentScope().referenceValue(node.exprName);
     } else {
       let expr = node.exprName.left;
       while (expr.type !== AST_NODE_TYPES.Identifier) {
         expr = expr.left;
       }
-      this.referencer.currentScope().referenceValue(expr);
+      this.#referencer.currentScope().referenceValue(expr);
     }
   }
 }

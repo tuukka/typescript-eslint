@@ -19,7 +19,8 @@ class GlobalScope extends ScopeBase<
    */
   null
 > {
-  private implicit: {
+  // note this is accessed in used in the legacy eslint-scope tests, so it can't be true private
+  private readonly implicit: {
     readonly set: Map<string, Variable>;
     readonly variables: Variable[];
     /**
@@ -28,6 +29,7 @@ class GlobalScope extends ScopeBase<
      */
     leftToBeResolved: Reference[];
   };
+
   constructor(scopeManager: ScopeManager, block: GlobalScope['block']) {
     super(scopeManager, ScopeType.global, null, block, false);
     this.implicit = {
@@ -36,6 +38,7 @@ class GlobalScope extends ScopeBase<
       leftToBeResolved: [],
     };
   }
+
   public close(scopeManager: ScopeManager): Scope | null {
     assert(this.leftToResolve);
 
@@ -50,27 +53,19 @@ class GlobalScope extends ScopeBase<
     // create an implicit global variable from assignment expression
     for (let i = 0; i < implicit.length; ++i) {
       const info = implicit[i];
-      this.defineImplicit(
-        info.pattern,
-        new ImplicitGlobalVariableDefinition(info.pattern, info.node),
-      );
+      const node = info.pattern;
+      if (node && node.type === AST_NODE_TYPES.Identifier) {
+        this.defineVariable(
+          node.name,
+          this.implicit.set,
+          this.implicit.variables,
+          node,
+          new ImplicitGlobalVariableDefinition(info.pattern, info.node),
+        );
+      }
     }
     this.implicit.leftToBeResolved = this.leftToResolve;
     return super.close(scopeManager);
-  }
-  private defineImplicit(
-    node: TSESTree.BindingName,
-    def: ImplicitGlobalVariableDefinition,
-  ): void {
-    if (node && node.type === AST_NODE_TYPES.Identifier) {
-      this.defineVariable(
-        node.name,
-        this.implicit.set,
-        this.implicit.variables,
-        node,
-        def,
-      );
-    }
   }
 }
 

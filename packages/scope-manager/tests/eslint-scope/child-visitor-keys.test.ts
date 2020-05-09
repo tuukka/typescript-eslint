@@ -3,23 +3,6 @@ import { parse } from '../util';
 import { analyze } from '../../src/analyze';
 
 describe('childVisitorKeys option', () => {
-  it('should handle as a known node if the childVisitorKeys option was given.', () => {
-    const ast = parse(`
-      var foo = 0;
-    `);
-
-    const decl = ast.body[0] as TSESTree.VariableDeclaration;
-    decl.declarations[0].init!.type = 'NumericLiteral' as never;
-
-    // should no error
-    analyze(ast, {
-      fallback: 'none',
-      childVisitorKeys: {
-        NumericLiteral: [],
-      },
-    });
-  });
-
   it('should not visit to properties which are not given.', () => {
     const ast = parse(`
       let foo = bar;

@@ -163,14 +163,18 @@ abstract class ScopeBase<
    * @public
    */
   public readonly childScopes: Scope[] = [];
-  private readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
+  /**
+   * A map of the variables for each node in this scope.
+   * This is map is a pointer to the one in the parent ScopeManager instance
+   */
+  readonly #declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
   /**
    * Generally, through the lexical scoping of JS you can always know which variable an identifier in the source code
    * refers to. There are a few exceptions to this rule. With `global` and `with` scopes you can only decide at runtime
    * which variable a reference refers to.
    * All those scopes are considered "dynamic".
    */
-  private dynamic: boolean;
+  #dynamic: boolean;
   /**
    * Whether this scope is created by a FunctionExpression.
    * @public
@@ -239,7 +243,7 @@ abstract class ScopeBase<
     const upperScopeAsScopeBase = upperScope as Scope;
 
     this.type = type;
-    this.dynamic =
+    this.#dynamic =
       this.type === ScopeType.global || this.type === ScopeType.with;
     this.block = block;
     this.variableScope =
@@ -261,13 +265,13 @@ abstract class ScopeBase<
       upperScopeAsScopeBase.childScopes.push(this as Scope);
     }
 
-    this.declaredVariables = scopeManager.declaredVariables;
+    this.#declaredVariables = scopeManager.declaredVariables;
 
     registerScope(scopeManager, this as Scope);
   }
 
   public shouldStaticallyClose(): boolean {
-    return !this.dynamic;
+    return !this.#dynamic;
   }
 
   private shouldStaticallyCloseForGlobal(ref: Reference): boolean {
@@ -285,7 +289,7 @@ abstract class ScopeBase<
     );
   }
 
-  private staticCloseRef = (ref: Reference): void => {
+  #staticCloseRef = (ref: Reference): void => {
     const resolve = (): boolean => {
       const name = ref.identifier.name;
       const variable = this.set.get(name);
@@ -317,7 +321,7 @@ abstract class ScopeBase<
     }
   };
 
-  private dynamicCloseRef = (ref: Reference): void => {
+  #dynamicCloseRef = (ref: Reference): void => {
     // notify all names are through to global
     let current = this as Scope | null;
 
@@ -327,13 +331,13 @@ abstract class ScopeBase<
     } while (current);
   };
 
-  private globalCloseRef = (ref: Reference): void => {
+  #globalCloseRef = (ref: Reference): void => {
     // let/const/class declarations should be resolved statically.
     // others should be resolved dynamically.
     if (this.shouldStaticallyCloseForGlobal(ref)) {
-      this.staticCloseRef(ref);
+      this.#staticCloseRef(ref);
     } else {
-      this.dynamicCloseRef(ref);
+      this.#dynamicCloseRef(ref);
     }
   };
 
@@ -341,11 +345,11 @@ abstract class ScopeBase<
     let closeRef;
 
     if (this.shouldStaticallyClose()) {
-      closeRef = this.staticCloseRef;
+      closeRef = this.#staticCloseRef;
     } else if (this.type !== 'global') {
-      closeRef = this.dynamicCloseRef;
+      closeRef = this.#dynamicCloseRef;
     } else {
-      closeRef = this.globalCloseRef;
+      closeRef = this.#globalCloseRef;
     }
 
     // Try Resolving all references in this scope.
@@ -384,11 +388,11 @@ abstract class ScopeBase<
       return;
     }
 
-    let variables = this.declaredVariables.get(node);
+    let variables = this.#declaredVariables.get(node);
 
     if (variables == null) {
       variables = [];
-      this.declaredVariables.set(node, variables);
+      this.#declaredVariables.set(node, variables);
     }
     if (!variables.includes(variable)) {
       variables.push(variable);

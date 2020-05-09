@@ -36,8 +36,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "2.33.0",
-    "esrecurse": "^4.2.1"
+    "@typescript-eslint/experimental-utils": "2.33.0"
   },
   "devDependencies": {
     "@types/jest-specific-snapshot": "^0.5.4",

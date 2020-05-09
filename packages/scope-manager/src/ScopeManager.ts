@@ -38,7 +38,7 @@ class ScopeManager {
    */
   public globalScope: GlobalScope | null;
   public readonly nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
-  private readonly options: ScopeManagerOptions;
+  readonly #options: ScopeManagerOptions;
   /**
    * All scopes
    * @public
@@ -60,35 +60,28 @@ class ScopeManager {
     this.globalScope = null;
     this.nodeToScope = new WeakMap();
     this.currentScope = null;
-    this.options = options;
+    this.#options = options;
     this.declaredVariables = new WeakMap();
   }
 
   public isGlobalReturn(): boolean {
-    return this.options.globalReturn === true;
+    return this.#options.globalReturn === true;
   }
 
   public isModule(): boolean {
-    return this.options.sourceType === 'module';
+    return this.#options.sourceType === 'module';
   }
 
   public isStrict(): boolean {
     return (
-      this.options.impliedStrict === true &&
-      this.options.ecmaVersion != null &&
-      this.options.ecmaVersion >= 5
+      this.#options.impliedStrict === true &&
+      this.#options.ecmaVersion != null &&
+      this.#options.ecmaVersion >= 5
     );
   }
 
   public isES6(): boolean {
-    return this.options.ecmaVersion != null && this.options.ecmaVersion >= 6;
-  }
-
-  /**
-   * Returns appropriate scope for this node.
-   */
-  private get(node: TSESTree.Node): Scope[] | undefined {
-    return this.nodeToScope.get(node);
+    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 6;
   }
 
   /**
@@ -118,7 +111,7 @@ class ScopeManager {
       return true;
     }
 
-    const scopes = this.get(node);
+    const scopes = this.nodeToScope.get(node);
 
     if (!scopes || scopes.length === 0) {
       return null;
@@ -151,7 +144,7 @@ class ScopeManager {
     return null;
   }
 
-  private nestScope(scope: Scope): Scope {
+  protected nestScope(scope: Scope): Scope {
     if (scope instanceof GlobalScope) {
       assert(this.currentScope === null);
       this.globalScope = scope;

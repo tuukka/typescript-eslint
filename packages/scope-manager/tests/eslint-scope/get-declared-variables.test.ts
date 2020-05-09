@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  simpleTraverse,
 } from '@typescript-eslint/experimental-utils';
-import { visit } from 'esrecurse';
 import { parse } from '../util/parse';
 import { analyze } from '../../src/analyze';
 
@@ -17,8 +17,8 @@ describe('ScopeManager.prototype.getDeclaredVariables', () => {
       sourceType: 'module',
     });
 
-    visit(ast, {
-      [type](node) {
+    simpleTraverse(ast, {
+      [type](node: TSESTree.Node) {
         const expected = expectedNamesList.shift()!;
         const actual = scopeManager.getDeclaredVariables(node);
 
@@ -30,8 +30,6 @@ describe('ScopeManager.prototype.getDeclaredVariables', () => {
             expect(actual[i].name).toBe(expected[i]);
           }
         }
-
-        this.visitChildren(node);
       },
     });
 
