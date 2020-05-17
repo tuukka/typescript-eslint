@@ -30,16 +30,24 @@ abstract class VisitorBase {
 
   /**
    * Default method for visiting children.
-   * When you need to call default visiting operation inside custom visiting
-   * operation, you can use it with `this.visitChildren(node)`.
+   * @param node the node whose children should be visited
+   * @param exclude a list of keys to not visit
    */
-  visitChildren(node: TSESTree.Node | null | undefined): void {
+  visitChildren<T extends TSESTree.Node>(
+    node: T | null | undefined,
+    excludeArr?: (keyof T)[],
+  ): void {
     if (node == null || node.type == null) {
       return;
     }
 
+    const exclude = new Set(excludeArr) as Set<string>;
     const children = this.#childVisitorKeys[node.type] ?? Object.keys(node);
     for (const key of children) {
+      if (exclude.has(key)) {
+        continue;
+      }
+
       const child = node[key as keyof TSESTree.Node] as unknown;
       if (!child) {
         continue;

@@ -352,7 +352,8 @@ class Referencer extends Visitor {
   protected CallExpression(
     node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
   ): void {
-    this.visitChildren(node);
+    this.visitChildren(node, ['typeParameters']);
+    this.visitType(node.typeParameters);
   }
 
   protected CatchClause(node: TSESTree.CatchClause): void {
