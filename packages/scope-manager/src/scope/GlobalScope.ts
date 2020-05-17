@@ -42,28 +42,23 @@ class GlobalScope extends ScopeBase<
   public close(scopeManager: ScopeManager): Scope | null {
     assert(this.leftToResolve);
 
-    const implicit = [];
-    for (let i = 0; i < this.leftToResolve.length; ++i) {
-      const ref = this.leftToResolve[i];
+    for (const ref of this.leftToResolve) {
       if (ref.maybeImplicitGlobal && !this.set.has(ref.identifier.name)) {
-        implicit.push(ref.maybeImplicitGlobal);
+        // create an implicit global variable from assignment expression
+        const info = ref.maybeImplicitGlobal;
+        const node = info.pattern;
+        if (node && node.type === AST_NODE_TYPES.Identifier) {
+          this.defineVariable(
+            node.name,
+            this.implicit.set,
+            this.implicit.variables,
+            node,
+            new ImplicitGlobalVariableDefinition(info.pattern, info.node),
+          );
+        }
       }
     }
 
-    // create an implicit global variable from assignment expression
-    for (let i = 0; i < implicit.length; ++i) {
-      const info = implicit[i];
-      const node = info.pattern;
-      if (node && node.type === AST_NODE_TYPES.Identifier) {
-        this.defineVariable(
-          node.name,
-          this.implicit.set,
-          this.implicit.variables,
-          node,
-          new ImplicitGlobalVariableDefinition(info.pattern, info.node),
-        );
-      }
-    }
     this.implicit.leftToBeResolved = this.leftToResolve;
     return super.close(scopeManager);
   }

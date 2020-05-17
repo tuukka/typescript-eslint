@@ -124,22 +124,6 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
   }
 }
 
-/**
- * Should the def be statically closed
- */
-function shouldBeStaticallyClosed(def: Definition): boolean {
-  return (
-    def.type === DefinitionType.Type ||
-    def.type === DefinitionType.TSModuleName ||
-    def.type === DefinitionType.TSEnumMember ||
-    def.type === DefinitionType.TSEnumName ||
-    def.type === DefinitionType.ClassName ||
-    (def.type === DefinitionType.Variable &&
-      def.parent?.type === AST_NODE_TYPES.VariableDeclaration &&
-      def.parent.kind !== 'var')
-  );
-}
-
 const generator = createIdGenerator();
 
 type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
@@ -274,7 +258,10 @@ abstract class ScopeBase<
     return !this.#dynamic;
   }
 
-  private shouldStaticallyCloseForGlobal(ref: Reference): boolean {
+  private shouldStaticallyCloseForGlobal(
+    ref: Reference,
+    scopeManager: ScopeManager,
+  ): boolean {
     // On global scope, let/const/class declarations should be resolved statically.
     const name = ref.identifier.name;
 
@@ -282,10 +269,30 @@ abstract class ScopeBase<
     if (!variable) {
       return false;
     }
+    // variable exists on the scope
 
+    // in module mode, we can statically resolve everything, regardless of its decl type
+    if (scopeManager.isModule()) {
+      return true;
+    }
+
+    // in script mode, only certain cases should be statically resolved
+    // Example:
+    // a `var` decl is ignored by the runtime if it clashes with a global name
+    // this means that we should not resolve the reference to the variable
     const defs = variable.defs;
     return (
-      defs != null && defs.length > 0 && defs.every(shouldBeStaticallyClosed)
+      defs.length > 0 &&
+      defs.every(def => {
+        if (
+          def.type === DefinitionType.Variable &&
+          def.parent?.type === AST_NODE_TYPES.VariableDeclaration &&
+          def.parent.kind === 'var'
+        ) {
+          return false;
+        }
+        return true;
+      })
     );
   }
 
@@ -331,17 +338,17 @@ abstract class ScopeBase<
     } while (current);
   };
 
-  #globalCloseRef = (ref: Reference): void => {
+  #globalCloseRef = (ref: Reference, scopeManager: ScopeManager): void => {
     // let/const/class declarations should be resolved statically.
     // others should be resolved dynamically.
-    if (this.shouldStaticallyCloseForGlobal(ref)) {
+    if (this.shouldStaticallyCloseForGlobal(ref, scopeManager)) {
       this.#staticCloseRef(ref);
     } else {
       this.#dynamicCloseRef(ref);
     }
   };
 
-  public close(_scopeManager: ScopeManager): Scope | null {
+  public close(scopeManager: ScopeManager): Scope | null {
     let closeRef;
 
     if (this.shouldStaticallyClose()) {
@@ -357,7 +364,7 @@ abstract class ScopeBase<
     for (let i = 0; i < this.leftToResolve.length; ++i) {
       const ref = this.leftToResolve[i];
 
-      closeRef(ref);
+      closeRef(ref, scopeManager);
     }
     this.leftToResolve = null;
 

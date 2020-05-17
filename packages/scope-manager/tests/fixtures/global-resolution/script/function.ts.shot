@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`decorators class 1`] = `
+exports[`global-resolution script function 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
       defs: Array [
         FunctionNameDefinition$1 {
-          name: Identifier<"decorator">,
+          name: Identifier<"top">,
           node: FunctionDeclaration$1,
         },
       ],
-      name: "decorator",
+      name: "top",
       references: Array [
         Reference$1 {
-          identifier: Identifier<"decorator">,
+          identifier: Identifier<"top">,
           isTypeReference: false,
           resolved: Variable$1,
         },
@@ -28,47 +28,21 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
-      defs: Array [
-        ClassNameDefinition$2 {
-          name: Identifier<"Foo">,
-          node: ClassDeclaration$2,
-        },
-      ],
-      name: "Foo",
-      references: Array [],
-      isValueVariable: true,
-      isTypeVariable: true,
-    },
-    Variable$4 {
-      defs: Array [
-        ClassNameDefinition$3 {
-          name: Identifier<"Foo">,
-          node: ClassDeclaration$2,
-        },
-      ],
-      name: "Foo",
-      references: Array [],
-      isValueVariable: true,
-      isTypeVariable: true,
-    },
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$3,
+      block: Program$2,
       isStrict: false,
       references: Array [
         Reference$1,
       ],
       set: Map {
-        "decorator" => Variable$1,
-        "Foo" => Variable$3,
+        "top" => Variable$1,
       },
       type: "global",
       upper: null,
       variables: Array [
         Variable$1,
-        Variable$3,
       ],
     },
     FunctionScope$2 {
@@ -82,19 +56,6 @@ ScopeManager {
       upper: GlobalScope$1,
       variables: Array [
         Variable$2,
-      ],
-    },
-    ClassScope$3 {
-      block: ClassDeclaration$2,
-      isStrict: true,
-      references: Array [],
-      set: Map {
-        "Foo" => Variable$4,
-      },
-      type: "class",
-      upper: GlobalScope$1,
-      variables: Array [
-        Variable$4,
       ],
     },
   ],

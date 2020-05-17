@@ -30,12 +30,17 @@ const fixtures = glob
     };
   });
 
-const FOUR_SLASH = /^\/\/\/\/[ ]+@(\w+) = (.+)$/;
-const ALLOWED_OPTIONS: Set<string> = new Set<keyof AnalyzeOptions>([
-  'ecmaVersion',
-  'globalReturn',
-  'impliedStrict',
-  'sourceType',
+const FOUR_SLASH = /^\/\/\/\/[ ]+@(\w+)[ ]*=[ ]*(.+)$/;
+const QUOTED_STRING = /^["'](.+?)['"]$/;
+type ALLOWED_VALUE = ['number' | 'boolean' | 'string', Set<unknown>?];
+const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
+  keyof AnalyzeOptions,
+  ALLOWED_VALUE
+>([
+  ['ecmaVersion', ['number']],
+  ['globalReturn', ['boolean']],
+  ['impliedStrict', ['boolean']],
+  ['sourceType', ['string', new Set(['module', 'script'])]],
 ]);
 
 function nestDescribe(
@@ -61,9 +66,53 @@ function nestDescribe(
         if (!match) {
           throw new Error(`Four-slash did not match expected format: ${line}`);
         }
-        const [, key, value] = match;
-        if (!ALLOWED_OPTIONS.has(key)) {
+        const [, key, rawValue] = match;
+        const type = ALLOWED_OPTIONS.get(key);
+        if (!type) {
           throw new Error(`Unknown option ${key}`);
+        }
+
+        let value: unknown = rawValue;
+        switch (type[0]) {
+          case 'string': {
+            const strmatch = QUOTED_STRING.exec(rawValue);
+            if (strmatch) {
+              value = strmatch[1];
+            }
+            break;
+          }
+
+          case 'number': {
+            const parsed = parseFloat(rawValue);
+            if (isNaN(parsed)) {
+              throw new Error(
+                `Expected a number for ${key}, but got ${rawValue}`,
+              );
+            }
+            value = parsed;
+            break;
+          }
+
+          case 'boolean': {
+            if (rawValue === 'true') {
+              value = true;
+            } else if (rawValue === 'false') {
+              value = false;
+            } else {
+              throw new Error(
+                `Expected a boolean for ${key}, but got ${rawValue}`,
+              );
+            }
+            break;
+          }
+        }
+
+        if (type[1] && !type[1].has(value)) {
+          throw new Error(
+            `Expected value for ${key} to be one of (${Array.from(type[1]).join(
+              ' | ',
+            )}), but got ${value}`,
+          );
         }
 
         if (value === 'true') {
