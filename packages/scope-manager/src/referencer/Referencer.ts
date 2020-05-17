@@ -221,6 +221,7 @@ class Referencer extends Visitor {
       if ('typeAnnotation' in param) {
         this.visitType(param.typeAnnotation);
       }
+      param.decorators?.forEach(d => this.visit(d));
     }
 
     // In TypeScript there are a number of function-like constructs which have no body,
@@ -259,6 +260,10 @@ class Referencer extends Visitor {
     this.visit(node.value);
     if (isMethodDefinition) {
       this.popInnerMethodDefinition(previous);
+    }
+
+    if ('decorators' in node) {
+      node.decorators?.forEach(d => this.visit(d));
     }
   }
 
