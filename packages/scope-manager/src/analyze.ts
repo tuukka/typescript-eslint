@@ -58,9 +58,4 @@ function analyze(
   return scopeManager;
 }
 
-export * from './definition';
-export { Reference } from './referencer/Reference';
-export * from './scope';
-export { ScopeManager } from './ScopeManager';
-export { Variable } from './Variable';
 export { analyze, AnalyzeOptions };
