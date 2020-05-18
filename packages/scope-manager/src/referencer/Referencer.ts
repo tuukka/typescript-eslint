@@ -704,7 +704,6 @@ class Referencer extends Visitor {
             new VariableDefinition(pattern, decl, node),
           );
 
-          this.visitType(pattern.typeAnnotation);
           this.referencingDefaultValue(pattern, info.assignments, null, true);
           if (init) {
             this.currentScope().referenceValue(

@@ -12,12 +12,7 @@ ScopeManager {
       ],
       name: "T",
       references: Array [
-        Reference$1 {
-          identifier: Identifier<"T">,
-          isTypeReference: true,
-          resolved: Variable$1,
-        },
-        Reference$3 {
+        Reference$2 {
           identifier: Identifier<"T">,
           isTypeReference: true,
           resolved: Variable$1,
@@ -35,7 +30,7 @@ ScopeManager {
       ],
       name: "x",
       references: Array [
-        Reference$2 {
+        Reference$1 {
           identifier: Identifier<"x">,
           init: true,
           isTypeReference: false,
@@ -54,7 +49,6 @@ ScopeManager {
       references: Array [
         Reference$1,
         Reference$2,
-        Reference$3,
       ],
       set: Map {
         "T" => Variable$1,
