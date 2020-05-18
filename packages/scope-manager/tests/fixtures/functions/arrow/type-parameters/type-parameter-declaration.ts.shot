@@ -26,8 +26,20 @@ ScopeManager {
     Variable$2 {
       defs: Array [
         TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "T",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
           name: Identifier<"Unresolved">,
-          node: TSTypeAliasDeclaration$3,
+          node: TSTypeAliasDeclaration$4,
         },
       ],
       name: "Unresolved",
@@ -38,7 +50,7 @@ ScopeManager {
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$4,
+      block: Program$5,
       isStrict: false,
       references: Array [
         Reference$1,
@@ -50,23 +62,27 @@ ScopeManager {
       ],
       set: Map {
         "foo" => Variable$1,
-        "Unresolved" => Variable$2,
+        "Unresolved" => Variable$3,
       },
       type: "global",
       upper: null,
       variables: Array [
         Variable$1,
-        Variable$2,
+        Variable$3,
       ],
     },
     FunctionScope$2 {
       block: ArrowFunctionExpression$2,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "T" => Variable$2,
+      },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: Array [
+        Variable$2,
+      ],
     },
   ],
 }

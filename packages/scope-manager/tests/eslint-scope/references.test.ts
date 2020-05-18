@@ -166,56 +166,6 @@ describe('References:', () => {
     });
   });
 
-  describe('When there is a `function` declaration on global,', () => {
-    it('the reference on global should NOT be resolved.', () => {
-      const { scopeManager } = parseAndAnalyze(`
-        function a() {}
-        a();
-      `);
-
-      expect(scopeManager.scopes).toHaveLength(2); // [global, a]
-
-      const scope = scopeManager.scopes[0];
-
-      expect(scope.variables).toHaveLength(1);
-      expect(scope.references).toHaveLength(1);
-
-      const reference = scope.references[0];
-
-      expect(reference.from).toBe(scope);
-      expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBeNull();
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
-    });
-
-    it('the reference in functions should NOT be resolved.', () => {
-      const { scopeManager } = parseAndAnalyze(`
-        function a() {}
-        function foo() {
-          let b = a();
-        }
-      `);
-
-      expect(scopeManager.scopes).toHaveLength(3); // [global, a, foo]
-
-      const scope = scopeManager.scopes[2];
-
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
-      expect(scope.references).toHaveLength(2); // [b, a]
-
-      const reference = scope.references[1];
-
-      expect(reference.from).toBe(scope);
-      expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBeNull();
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
-    });
-  });
-
   describe('When there is a `class` declaration on global,', () => {
     it('the reference on global should be resolved.', () => {
       const { scopeManager } = parseAndAnalyze(`

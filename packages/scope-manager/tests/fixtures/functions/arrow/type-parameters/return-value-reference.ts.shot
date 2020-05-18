@@ -23,10 +23,28 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$3,
+      block: Program$4,
       isStrict: false,
       references: Array [
         Reference$1,
@@ -43,11 +61,17 @@ ScopeManager {
     FunctionScope$2 {
       block: ArrowFunctionExpression$2,
       isStrict: false,
-      references: Array [],
-      set: Map {},
+      references: Array [
+        Reference$2,
+      ],
+      set: Map {
+        "T" => Variable$2,
+      },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: Array [
+        Variable$2,
+      ],
     },
   ],
 }

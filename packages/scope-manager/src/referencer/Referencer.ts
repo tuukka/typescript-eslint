@@ -224,6 +224,9 @@ class Referencer extends Visitor {
       param.decorators?.forEach(d => this.visit(d));
     }
 
+    this.visitType(node.returnType);
+    this.visitType(node.typeParameters);
+
     // In TypeScript there are a number of function-like constructs which have no body,
     // so check it exists before traversing
     if (node.body) {
