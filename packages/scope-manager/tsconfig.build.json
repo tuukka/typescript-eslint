@@ -8,5 +8,5 @@
   },
   "include": ["src", "typings"],
   "exclude": ["tests/fixtures"],
-  "references": [{ "path": "../experimental-utils/tsconfig.build.json" }]
+  "references": [{ "path": "../typescript-estree/tsconfig.build.json" }]
 }

@@ -2,7 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
   visitorKeys,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/typescript-estree';
 
 interface VisitorKeys {
   readonly [type: string]: ReadonlyArray<string> | undefined;

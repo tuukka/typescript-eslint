@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { parse } from '../util';
 import { analyze } from '../../src/analyze';
 

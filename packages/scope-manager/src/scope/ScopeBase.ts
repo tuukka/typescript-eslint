@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { FunctionScope } from './FunctionScope';
 import { GlobalScope } from './GlobalScope';
 import { ScopeType } from './ScopeType';

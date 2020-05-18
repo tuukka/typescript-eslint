@@ -1,8 +1,8 @@
 import {
-  TSESLint,
   TSESTree,
+  EcmaVersion,
   visitorKeys,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/typescript-estree';
 import { Referencer, ReferencerOptions } from './referencer';
 import { ScopeManager } from './ScopeManager';
 
@@ -26,7 +26,7 @@ interface AnalyzeOptions {
   /**
    * Which ECMAScript version is considered
    */
-  ecmaVersion?: TSESLint.EcmaVersion;
+  ecmaVersion?: EcmaVersion;
 
   /**
    * Known visitor keys.

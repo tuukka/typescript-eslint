@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
   simpleTraverse,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/typescript-estree';
 import { parse } from '../util/parse';
 import { analyze } from '../../src/analyze';
 

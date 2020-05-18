@@ -1,8 +1,8 @@
 import {
-  simpleTraverse,
   AST_NODE_TYPES,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+  simpleTraverse,
+} from '@typescript-eslint/typescript-estree';
 
 function getSpecificNode<
   TSelector extends AST_NODE_TYPES,

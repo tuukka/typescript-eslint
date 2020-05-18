@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 import { Scope } from './Scope';

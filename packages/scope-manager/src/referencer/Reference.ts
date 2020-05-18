@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { createIdGenerator } from '../ID';
 import { Scope } from '../scope';
 import { Variable } from '../Variable';

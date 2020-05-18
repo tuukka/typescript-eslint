@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 import { ParameterDefinition, TypeDefinition } from '../definition';

@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import { ImportBindingDefinition } from '../definition';
 import { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
