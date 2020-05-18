@@ -38,7 +38,7 @@ ScopeManager {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"a">,
-          node: TSEmptyBodyFunctionExpression$2,
+          node: FunctionExpression$2,
         },
       ],
       name: "a",
@@ -50,7 +50,7 @@ ScopeManager {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"b">,
-          node: TSEmptyBodyFunctionExpression$2,
+          node: FunctionExpression$2,
         },
       ],
       name: "b",
@@ -87,7 +87,7 @@ ScopeManager {
       ],
     },
     FunctionScope$3 {
-      block: TSEmptyBodyFunctionExpression$2,
+      block: FunctionExpression$2,
       isStrict: true,
       references: Array [],
       set: Map {

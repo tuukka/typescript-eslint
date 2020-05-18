@@ -41,7 +41,7 @@
   "devDependencies": {
     "@types/jest-specific-snapshot": "^0.5.4",
     "@types/mkdirp": "^1.0.0",
-    "@typescript-eslint/parser": "2.33.0",
+    "@typescript-eslint/typescript-estree": "2.33.0",
     "glob": "^7.1.6",
     "jest-specific-snapshot": "^3.0.0",
     "make-dir": "^3.1.0",
