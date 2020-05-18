@@ -1,28 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`functions function-declaration type-parameters type-param-reference 1`] = `
+exports[`type-declaration type-parameters interface type-parameter-declaration-extends 1`] = `
 ScopeManager {
   variables: Array [
     Variable$1 {
       defs: Array [
-        FunctionNameDefinition$1 {
-          name: Identifier<"foo">,
-          node: FunctionDeclaration$1,
+        TypeDefinition$1 {
+          name: Identifier<"Foo">,
+          node: TSInterfaceDeclaration$1,
         },
       ],
-      name: "foo",
+      name: "Foo",
       references: Array [],
-      isValueVariable: true,
-      isTypeVariable: false,
-    },
-    Variable$2 {
-      defs: Array [],
-      name: "arguments",
-      references: Array [],
-      isValueVariable: true,
+      isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$2 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"T">,
@@ -34,13 +27,13 @@ ScopeManager {
         Reference$1 {
           identifier: Identifier<"T">,
           isTypeReference: true,
-          resolved: Variable$3,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"U">,
@@ -59,7 +52,7 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "foo" => Variable$1,
+        "Foo" => Variable$1,
       },
       type: "global",
       upper: null,
@@ -67,23 +60,21 @@ ScopeManager {
         Variable$1,
       ],
     },
-    FunctionScope$2 {
-      block: FunctionDeclaration$1,
-      isStrict: false,
+    TypeScope$2 {
+      block: TSInterfaceDeclaration$1,
+      isStrict: true,
       references: Array [
         Reference$1,
       ],
       set: Map {
-        "arguments" => Variable$2,
-        "T" => Variable$3,
-        "U" => Variable$4,
+        "T" => Variable$2,
+        "U" => Variable$3,
       },
-      type: "function",
+      type: "type",
       upper: GlobalScope$1,
       variables: Array [
         Variable$2,
         Variable$3,
-        Variable$4,
       ],
     },
   ],

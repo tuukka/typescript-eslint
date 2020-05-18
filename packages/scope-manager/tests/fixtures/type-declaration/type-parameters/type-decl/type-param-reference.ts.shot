@@ -23,7 +23,13 @@ ScopeManager {
         },
       ],
       name: "T",
-      references: Array [],
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          resolved: Variable$2,
+        },
+      ],
       isValueVariable: false,
       isTypeVariable: true,
     },
@@ -57,7 +63,9 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: Array [
+        Reference$1,
+      ],
       set: Map {
         "T" => Variable$2,
         "U" => Variable$3,

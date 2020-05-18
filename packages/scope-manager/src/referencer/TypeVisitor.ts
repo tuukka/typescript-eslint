@@ -175,6 +175,9 @@ class TypeVisitor extends Visitor {
     this.#referencer
       .currentScope()
       .defineIdentifier(node.name, new TypeDefinition(node.name, node));
+
+    this.visit(node.constraint);
+    this.visit(node.default);
   }
 
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
