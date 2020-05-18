@@ -214,13 +214,14 @@ class Referencer extends Visitor {
             new ParameterDefinition(pattern, node, info.rest),
           );
 
-          this.visitType(pattern.typeAnnotation);
           this.referencingDefaultValue(pattern, info.assignments, null, true);
         },
         { processRightHandNodes: true },
       );
       if ('typeAnnotation' in param) {
         this.visitType(param.typeAnnotation);
+      } else if (param.type === AST_NODE_TYPES.AssignmentPattern) {
+        this.visitType(param.left.typeAnnotation);
       }
       param.decorators?.forEach(d => this.visit(d));
     }
