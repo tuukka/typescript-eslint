@@ -50,9 +50,7 @@ ScopeManager {
     GlobalScope$1 {
       block: Program$3,
       isStrict: false,
-      references: Array [
-        Reference$1,
-      ],
+      references: Array [],
       set: Map {
         "A" => Variable$1,
         "B" => Variable$2,
@@ -67,7 +65,9 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$2,
       isStrict: true,
-      references: Array [],
+      references: Array [
+        Reference$1,
+      ],
       set: Map {
         "B" => Variable$3,
       },
