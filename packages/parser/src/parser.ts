@@ -8,7 +8,7 @@ import {
   simpleTraverse,
   visitorKeys,
 } from '@typescript-eslint/typescript-estree';
-import { analyzeScope } from './analyze-scope';
+import { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
 
 type ParserOptions = TSESLint.ParserOptions;
 
@@ -23,7 +23,7 @@ interface ParseForESLintResult {
   };
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
-  scopeManager: ReturnType<typeof analyzeScope>;
+  scopeManager: ScopeManager;
 }
 
 function validateBoolean(
@@ -105,7 +105,11 @@ export function parseForESLint(
     },
   });
 
-  const scopeManager = analyzeScope(ast, options);
+  const scopeManager = analyze(ast, {
+    ecmaVersion: options.ecmaVersion,
+    globalReturn: options.ecmaFeatures.globalReturn,
+    sourceType: options.sourceType,
+  });
   return { ast, services, scopeManager, visitorKeys };
 }
 
