@@ -1441,7 +1441,7 @@ export interface TSLiteralType extends BaseNode {
 
 export interface TSMappedType extends BaseNode {
   type: AST_NODE_TYPES.TSMappedType;
-  typeParameter: TSTypeParameterDeclaration;
+  typeParameter: TSTypeParameter;
   readonly?: boolean | '-' | '+';
   optional?: boolean | '-' | '+';
   typeAnnotation?: TypeNode;

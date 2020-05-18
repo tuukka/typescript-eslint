@@ -21,6 +21,9 @@ function error(
 ruleTester.run('no-unused-vars', rule, {
   valid: [
     `
+//
+    `,
+    `
 import { ClassDecoratorFactory } from 'decorators';
 @ClassDecoratorFactory()
 export class Foo {}
@@ -130,22 +133,22 @@ console.log(a);
     `,
     `
 import { Foo } from 'foo';
-function bar<T>() {}
+function bar<T>(): T {}
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = function <T>() {};
+const bar = function <T>(): T {};
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = <T>() => {};
+const bar = <T>(): T => {};
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-<Foo>(<T>() => {})();
+<Foo>(<T>(): T => {})();
     `,
     `
 import { Nullable } from 'nullable';
@@ -273,14 +276,14 @@ new A();
     `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
   do(a: Nullable<Another>);
 }
     `,
     `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
   other: Nullable<Another>;
 }
     `,
@@ -301,7 +304,6 @@ foo();
     `
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
-import { Another } from 'some';
 class A extends Nullable<SomeOther> {
   other: Nullable<Another>;
 }
@@ -322,7 +324,7 @@ new A();
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
-interface A extends Nullable<SomeOther> {
+export interface A extends Nullable<SomeOther> {
   other: Nullable<Another>;
 }
     `,
@@ -330,49 +332,61 @@ interface A extends Nullable<SomeOther> {
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
-interface A extends Nullable<SomeOther> {
+export interface A extends Nullable<SomeOther> {
   do(a: Nullable<Another>);
 }
     `,
     `
 import { Foo } from './types';
 
-class Bar<T extends Foo> {}
+class Bar<T extends Foo> {
+  prop: T;
+}
 
 new Bar<number>();
     `,
     `
 import { Foo, Bar } from './types';
 
-class Baz<T extends Foo & Bar> {}
+class Baz<T extends Foo & Bar> {
+  prop: T;
+}
 
 new Baz<any>();
     `,
     `
 import { Foo } from './types';
 
-class Bar<T = Foo> {}
+class Bar<T = Foo> {
+  prop: T;
+}
 
 new Bar<number>();
     `,
     `
 import { Foo } from './types';
 
-class Foo<T = any> {}
+class Foo<T = any> {
+  prop: T;
+}
 
 new Foo();
     `,
     `
 import { Foo } from './types';
 
-class Foo<T = {}> {}
+class Foo<T = {}> {
+  prop: T;
+}
 
 new Foo();
     `,
     `
 import { Foo } from './types';
 
-class Foo<T extends {} = {}> {}
+class Foo<T extends {} = {}> {
+  prop: T;
+}
 
 new Foo();
     `,
@@ -396,7 +410,7 @@ new A<Nullable>();
     `
 import { Nullable } from 'nullable';
 import { SomeOther } from 'other';
-function foo<T extends Nullable>() {}
+function foo<T extends Nullable>(): T {}
 foo<SomeOther>();
     `,
     `
@@ -481,7 +495,9 @@ export function authenticated(cb: (user: User | null) => void): void {
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/33
     `
 import { Foo } from './types';
-export class Bar<T extends Foo> {}
+export class Bar<T extends Foo> {
+  prop: T;
+}
     `,
     `
 import webpack from 'webpack';
@@ -495,7 +511,9 @@ export function foo(options: ExecaOptions): execa {
     `,
     `
 import { Foo, Bar } from './types';
-export class Baz<F = Foo & Bar> {}
+export class Baz<F = Foo & Bar> {
+  prop: F;
+}
     `,
     `
 // warning 'B' is defined but never used
@@ -512,7 +530,7 @@ enum FormFieldIds {
   PHONE = 'phone',
   EMAIL = 'email',
 }
-interface IFoo {
+export interface IFoo {
   fieldName: FormFieldIds;
 }
     `,
@@ -521,7 +539,7 @@ enum FormFieldIds {
   PHONE = 'phone',
   EMAIL = 'email',
 }
-interface IFoo {
+export interface IFoo {
   fieldName: FormFieldIds.EMAIL;
 }
     `,
