@@ -260,7 +260,6 @@ class Referencer extends Visitor {
     }
 
     const isMethodDefinition = node.type === AST_NODE_TYPES.MethodDefinition;
-
     if (isMethodDefinition) {
       previous = this.pushInnerMethodDefinition(true);
     }
@@ -395,6 +394,7 @@ class Referencer extends Visitor {
 
   protected ClassProperty(node: TSESTree.ClassProperty): void {
     this.visitProperty(node);
+    this.visitType(node.typeAnnotation);
   }
 
   protected ContinueStatement(): void {
