@@ -36,14 +36,14 @@ class PatternVisitor extends VisitorBase {
     );
   }
 
-  public readonly rootPattern: TSESTree.Node;
-  public readonly callback: PatternVisitorCallback;
-  public readonly assignments: (
+  readonly #rootPattern: TSESTree.Node;
+  readonly #callback: PatternVisitorCallback;
+  readonly #assignments: (
     | TSESTree.AssignmentPattern
     | TSESTree.AssignmentExpression
   )[] = [];
   public readonly rightHandNodes: TSESTree.Node[] = [];
-  public readonly restElements: TSESTree.RestElement[] = [];
+  readonly #restElements: TSESTree.RestElement[] = [];
 
   constructor(
     options: PatternVisitorOptions,
@@ -51,8 +51,8 @@ class PatternVisitor extends VisitorBase {
     callback: PatternVisitorCallback,
   ) {
     super(options);
-    this.rootPattern = rootPattern;
-    this.callback = callback;
+    this.#rootPattern = rootPattern;
+    this.#callback = callback;
   }
 
   protected ArrayExpression(node: TSESTree.ArrayExpression): void {
@@ -66,17 +66,17 @@ class PatternVisitor extends VisitorBase {
   }
 
   protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
-    this.assignments.push(node);
+    this.#assignments.push(node);
     this.visit(node.left);
     this.rightHandNodes.push(node.right);
-    this.assignments.pop();
+    this.#assignments.pop();
   }
 
   protected AssignmentPattern(pattern: TSESTree.AssignmentPattern): void {
-    this.assignments.push(pattern);
+    this.#assignments.push(pattern);
     this.visit(pattern.left);
     this.rightHandNodes.push(pattern.right);
-    this.assignments.pop();
+    this.#assignments.pop();
   }
 
   protected CallExpression(node: TSESTree.CallExpression): void {
@@ -89,15 +89,15 @@ class PatternVisitor extends VisitorBase {
 
   protected Identifier(pattern: TSESTree.Identifier): void {
     const lastRestElement =
-      this.restElements[this.restElements.length - 1] ?? null;
+      this.#restElements[this.#restElements.length - 1] ?? null;
 
-    this.callback(pattern, {
-      topLevel: pattern === this.rootPattern,
+    this.#callback(pattern, {
+      topLevel: pattern === this.#rootPattern,
       rest:
         lastRestElement !== null &&
         lastRestElement !== undefined &&
         lastRestElement.argument === pattern,
-      assignments: this.assignments,
+      assignments: this.#assignments,
     });
   }
 
@@ -124,9 +124,9 @@ class PatternVisitor extends VisitorBase {
   }
 
   protected RestElement(pattern: TSESTree.RestElement): void {
-    this.restElements.push(pattern);
+    this.#restElements.push(pattern);
     this.visit(pattern.argument);
-    this.restElements.pop();
+    this.#restElements.pop();
   }
 
   protected SpreadElement(node: TSESTree.SpreadElement): void {
